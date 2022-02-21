@@ -18,11 +18,11 @@ Program accepts:
 
 
 ## Technology
-* Java
-* Maven
-* Lucene
-* Picocli
-* Jupiter/JUnit 5
+* Java programming language
+* Maven build automation tool
+* Lucene library
+* Picocli framework
+* Jupiter/JUnit 5 as testing tools
 
 ## How to run NameMatcher
 ```
@@ -60,3 +60,5 @@ Project is: _in progress_
 ## Room for Improvement
 - improve scoring algorithm
 - improve test coverage
+- create independent and isolated environment to launch app
+- convert to web app with drag-and-drop files and different display filters

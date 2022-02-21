@@ -17,13 +17,15 @@ public class FileUtil {
 	FileUtil() {}
 	
 	public static File getFileFromFileName(String fileName, Class<?> clazz) {
+		LOGGER.info(String.format("Get file %s", fileName));
+
 		ClassLoader classLoader = clazz.getClassLoader();
 		return new File(classLoader.getResource(fileName).getFile());
 	}
 	
     public static File createDirectory(String dirName) throws IOException {
     	LOGGER.info(String.format("Creating directory %s", dirName));
-    	
+
     	isCorrectFileName(dirName);
     	String jarFilePath = FileUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     	String targetPath = Paths.get(jarFilePath).getParent().toString();
@@ -35,6 +37,8 @@ public class FileUtil {
     }
 	
 	public static List<String> readFromIOStream(InputStream ioStream) throws IOException {
+		LOGGER.info("Creating array of strings from the stream");
+
 		ArrayList<String> lines =  new ArrayList<>();
 		String line;
 
@@ -44,19 +48,16 @@ public class FileUtil {
 	                lines.add(line);
 	            }
 		}
-		
-		LOGGER.info("Creating array of strings from the stream");
 		return lines;
 	}
 	
 	public static InputStream readAsIOStream(String fileName, Class<?> clazz) throws IOException {
+		LOGGER.info(String.format("Reading %s as stream", fileName));
+
         InputStream ioStream = clazz.getClassLoader().getResourceAsStream(fileName);
         if (ioStream == null) {
             throw new FileNotFoundException(String.format("<%s> not found", fileName));
         }
-        
-        LOGGER.info(String.format("Reading %s as stream", fileName));
-        
         return ioStream;
     }
     

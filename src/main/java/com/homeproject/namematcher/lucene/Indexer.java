@@ -48,13 +48,12 @@ public class Indexer implements Closeable {
     }
     
     @Override
-    public void close() throws IOException {
+    public void close() throws RuntimeException, IOException {
     	LOGGER.info("Index is closed");
     	indexDir.close();
     }
 
-    public Document getDocument(String fileName, String line)
-    		throws IOException {
+    public Document getDocument(String fileName, String line) {
     	String filePath = getFileFromFileName(fileName, this.getClass()).getName();
     	Document doc = new Document();
     	doc.add(new StringField(LUCENE_FILE_NAME, fileName, Field.Store.YES)); 
@@ -63,33 +62,6 @@ public class Indexer implements Closeable {
     	
     	return doc;
     }
-    
-//    public Set<String> extractTermsInStr(String text) throws IOException {
-//        Set<String> queryTermsInStr = new HashSet<String>();
-//        TokenStream tokenStream = analyzer.tokenStream(LUCENE_RAW_CONTENT, text);
-//        CharTermAttribute attr = tokenStream.addAttribute(CharTermAttribute.class);
-//        tokenStream.reset();
-//        while (tokenStream.incrementToken()) {
-//        	queryTermsInStr.add(attr.toString());
-//        }
-//        return queryTermsInStr;
-//    }
-    
-//    public void addFileToIndex(String inputFile) throws IOException {
-//    	LOGGER.info(String.format("Indexing %s", inputFile));
-//    	
-//    	IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-//    	indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-//    	IndexWriter writer = new IndexWriter(indexDir, indexWriterConfig);	
-//    	
-//    	InputStream fis = readAsIOStream(inputFile, this.getClass());
-//    	List<String> lines = readFromIOStream(fis);
-//    	for(String line: lines) {
-//    		Document doc = getDocument(inputFile, line);
-//    		writer.addDocument(doc);
-//    	}
-//    	writer.close();
-//    }
     
     public List<Document> searchIndex(Query query) throws IOException {
     	LOGGER.info("Searching by query");
@@ -130,7 +102,6 @@ public class Indexer implements Closeable {
     	for(String str: analyzedQueryString) {
     		flt.addTerms(str, LUCENE_RAW_CONTENT, DEFAULT_MIN_SIMILARITY, DEFAULT_PREFIX_LENGTH);
     	}
-    	//Query query = flt.rewrite(searcher.getIndexReader());
     	return searchIndex(flt);
     }
 	  
