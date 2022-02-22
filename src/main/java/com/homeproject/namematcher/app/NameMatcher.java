@@ -24,14 +24,22 @@ public class NameMatcher {
   }
 
   private void setInputName(String inputName) {
-    if (isCorrectInputName(inputName)) {
-      this.inputName = inputName;
+    try {
+      if (isCorrectInputName(inputName)) {
+        this.inputName = inputName;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
   private void setInputFiles(String[] inputFiles) {
-    if (isCorrectInputFiles(inputFiles)) {
-      this.inputFiles = inputFiles;
+    try {
+      if (isCorrectInputFiles(inputFiles)) {
+        this.inputFiles = inputFiles;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -46,7 +54,10 @@ public class NameMatcher {
       LOGGER.info(String.format("Work with %s file", inputFile));
       try (Indexer indexer = new Indexer(inputFile)) {
         List<Document> nameDocs = indexer.searchIndexWithFuzzyQuery(inputName);
-        List<String> names = nameDocs.stream().map(nameDoc -> nameDoc.get(LUCENE_RAW_CONTENT)).collect(Collectors.toList());
+        List<String> names =
+            nameDocs.stream()
+                .map(nameDoc -> nameDoc.get(LUCENE_RAW_CONTENT))
+                .collect(Collectors.toList());
         inputFileToNameMatches.put(inputFile, new HashSet<>(names));
       } catch (IOException e) {
         e.printStackTrace();

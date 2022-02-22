@@ -36,11 +36,15 @@ public class Indexer implements Closeable {
     indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
     writer = new IndexWriter(indexDir, indexWriterConfig);
 
-    InputStream fis = readAsIOStream(inputFile, this.getClass());
-    List<String> lines = readFromIOStream(fis);
-    for (String line : lines) {
-      Document doc = getDocument(inputFile, line);
-      writer.addDocument(doc);
+    try {
+      InputStream fis = readAsIOStream(inputFile, this.getClass());
+      List<String> lines = readFromIOStream(fis);
+      for (String line : lines) {
+        Document doc = getDocument(inputFile, line);
+        writer.addDocument(doc);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     writer.close();
   }
@@ -77,7 +81,8 @@ public class Indexer implements Closeable {
     return documents;
   }
 
-  public List<Document> searchIndex(String inField, String queryString) throws IOException, ParseException {
+  public List<Document> searchIndex(String inField, String queryString)
+      throws IOException, ParseException {
     LOGGER.info(String.format("Creating query from %s in %s field", inField, queryString));
     Query query = new QueryParser(inField, analyzer).parse(queryString);
     return searchIndex(query);

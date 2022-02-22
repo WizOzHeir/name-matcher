@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import com.homeproject.namematcher.lucene.Indexer;
+import exception.InputException;
 
 public class FileUtil {
   private static final Logger LOGGER = Logger.getLogger(Indexer.class.getName());
@@ -25,8 +26,13 @@ public class FileUtil {
   public static File createDirectory(String dirName) throws IOException {
     LOGGER.info(String.format("Creating directory %s", dirName));
 
-    isCorrectFileName(dirName);
-    String jarFilePath = FileUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    try {
+      isCorrectFileName(dirName);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    String jarFilePath =
+        FileUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     String targetPath = Paths.get(jarFilePath).getParent().toString();
     File targetDir = new File(targetPath, dirName);
     if (!targetDir.exists()) {
@@ -50,12 +56,16 @@ public class FileUtil {
     return lines;
   }
 
-  public static InputStream readAsIOStream(String fileName, Class<?> clazz) throws IOException {
+  public static InputStream readAsIOStream(String fileName, Class<?> clazz)
+      throws InputException.NoFile, InputException.InvalidParam, InputException.NoData {
     LOGGER.info(String.format("Reading %s as stream", fileName));
+    InputStream ioStream = null;
 
-    InputStream ioStream = clazz.getClassLoader().getResourceAsStream(fileName);
+    if (isCorrectFileName(fileName)) {
+      ioStream = clazz.getClassLoader().getResourceAsStream(fileName);
+    }
     if (ioStream == null) {
-      throw new FileNotFoundException(String.format("<%s> not found", fileName));
+      throw new InputException.NoFile(fileName);
     }
     return ioStream;
   }

@@ -39,7 +39,8 @@ public class NameMatcherViewer {
           .getInputFileToNameMatches()
           .forEach(
               (inputFile, uniqueNames) -> {
-                File outputFile = new File(outputDir.getPath(), String.format("OUTPUT-%s", inputFile));
+                File outputFile =
+                    new File(outputDir.getPath(), String.format("OUTPUT-%s", inputFile));
                 try {
                   writeInFile(outputFile, uniqueNames);
                   return;
