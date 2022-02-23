@@ -1,6 +1,7 @@
 package com.homeproject.namematcher.util;
 
 import com.homeproject.namematcher.app.NameMatcher;
+import exception.InputException;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,18 +20,16 @@ public class NameMatcherViewer {
     this.nameMatcher = nameMatcher;
   }
 
-  public void setOutputDir(String outputDirName) {
+  public void setOutputDir(String outputDirName)
+      throws InputException.InvalidParam, IOException, InputException.NoData {
     LOGGER.info(String.format("Create output directory %s", outputDir));
     if (outputDirName != null) {
-      try {
-        outputDir = createDirectory(outputDirName);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      outputDir = createDirectory(outputDirName);
     }
   }
 
-  public void getView(String outputDirName) {
+  public void getView(String outputDirName)
+      throws InputException.InvalidParam, IOException, InputException.NoData {
     LOGGER.info("Set appropriate result(s) view");
 
     if (outputDir != null) {
@@ -43,7 +42,6 @@ public class NameMatcherViewer {
                     new File(outputDir.getPath(), String.format("OUTPUT-%s", inputFile));
                 try {
                   writeInFile(outputFile, uniqueNames);
-                  return;
                 } catch (IOException e) {
                   e.printStackTrace();
                 }

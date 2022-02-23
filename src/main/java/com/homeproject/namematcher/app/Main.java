@@ -1,8 +1,10 @@
 package com.homeproject.namematcher.app;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import com.homeproject.namematcher.util.NameMatcherViewer;
+import exception.BaseException;
 import picocli.CommandLine;
 
 public class Main {
@@ -13,11 +15,17 @@ public class Main {
 
     if (args.isRunningMode()) {
       LOGGER.info("Start the application");
-      NameMatcher nameMatcher = new NameMatcher(args.getInputName(), args.getInputFiles());
-      nameMatcher.start();
-      NameMatcherViewer viewer = new NameMatcherViewer(nameMatcher);
-      viewer.getView(args.getOutputDirName());
-      LOGGER.info("Application finished");
+      try {
+        NameMatcher nameMatcher = new NameMatcher(args.getInputName(), args.getInputFiles());
+        nameMatcher.start();
+        NameMatcherViewer viewer = new NameMatcherViewer(nameMatcher);
+        viewer.getView(args.getOutputDirName());
+        LOGGER.info("Application finished");
+      } catch (BaseException e) {
+        System.out.println(e.showWithTime());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 

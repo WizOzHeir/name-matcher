@@ -1,7 +1,7 @@
 package exception;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public abstract class BaseException extends Exception {
   private String msg;
@@ -19,9 +19,10 @@ public abstract class BaseException extends Exception {
   }
 
   public String showWithTime() {
-    LocalDateTime now = LocalDateTime.now();
-    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-    String timeString = format.format(now);
-    return String.format("[%s] %s", timeString, getMessage());
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    String timeString = timeFormat.format(new Date());
+    return String.format(
+        "[%s] %s in thread \"%s\" - %s",
+        timeString, BaseException.class.getName(), Thread.currentThread().getName(), getMsg());
   }
 }

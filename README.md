@@ -23,6 +23,7 @@ Program accepts:
 * Lucene library
 * Picocli framework
 * Jupiter/JUnit 5 as testing tools
+* Google Formatter Plugin
 
 ## How to run NameMatcher
 ```

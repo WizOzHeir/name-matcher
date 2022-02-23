@@ -1,6 +1,7 @@
 package com.homeproject.namematcher.app;
 
 import com.homeproject.namematcher.lucene.Indexer;
+import exception.InputException;
 import org.apache.lucene.document.Document;
 
 import java.io.IOException;
@@ -18,28 +19,23 @@ public class NameMatcher {
   private String[] inputFiles;
   private Map<String, Set<String>> inputFileToNameMatches;
 
-  public NameMatcher(String inputName, String[] inputFiles) {
+  public NameMatcher(String inputName, String[] inputFiles)
+      throws InputException.InvalidParam, InputException.NoData, InputException.NoFile {
     setInputName(inputName);
     setInputFiles(inputFiles);
   }
 
-  private void setInputName(String inputName) {
-    try {
-      if (isCorrectInputName(inputName)) {
-        this.inputName = inputName;
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+  private void setInputName(String inputName)
+      throws InputException.InvalidParam, InputException.NoData {
+    if (isCorrectInputName(inputName)) {
+      this.inputName = inputName;
     }
   }
 
-  private void setInputFiles(String[] inputFiles) {
-    try {
-      if (isCorrectInputFiles(inputFiles)) {
-        this.inputFiles = inputFiles;
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+  private void setInputFiles(String[] inputFiles)
+      throws InputException.InvalidParam, InputException.NoFile, InputException.NoData {
+    if (isCorrectInputFiles(inputFiles)) {
+      this.inputFiles = inputFiles;
     }
   }
 
@@ -47,7 +43,7 @@ public class NameMatcher {
     return inputFileToNameMatches;
   }
 
-  public void start() {
+  public void start() throws IOException {
     inputFileToNameMatches = new HashMap<>();
 
     for (String inputFile : inputFiles) {
@@ -59,8 +55,6 @@ public class NameMatcher {
                 .map(nameDoc -> nameDoc.get(LUCENE_RAW_CONTENT))
                 .collect(Collectors.toList());
         inputFileToNameMatches.put(inputFile, new HashSet<>(names));
-      } catch (IOException e) {
-        e.printStackTrace();
       }
     }
   }

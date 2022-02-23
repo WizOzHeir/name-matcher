@@ -1,10 +1,7 @@
 package com.homeproject.namematcher.util;
 
-import exception.BaseException;
 import exception.InputException;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -39,7 +36,6 @@ public class Checker {
     LOGGER.info(String.format("Check if %s exists", fileName));
 
     if (isCorrectFileName(fileName)) {
-
       InputStream ioStream = Checker.class.getClassLoader().getResourceAsStream(fileName);
       if (ioStream == null) {
         throw new InputException.NoFile(fileName);
@@ -57,9 +53,10 @@ public class Checker {
       throw new InputException.NoData();
     }
 
-    Pattern pattern = Pattern.compile("^[(?i)a-z ,.'-]+", Pattern.CASE_INSENSITIVE);
+    Pattern pattern = Pattern.compile("^[(?i)a-z ,.'-]+", Pattern.CASE_INSENSITIVE); // correct name
     Matcher matcher = pattern.matcher(inputName);
     inputName = inputName.strip();
+
     if (inputName.length() < MIN_INPUT_NAME_LEN
         || inputName.length() > MAX_INPUT_NAME_LEN
         || !matcher.matches()) {
