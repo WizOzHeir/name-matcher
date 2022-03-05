@@ -30,23 +30,19 @@ public class FileUtilTests {
   }
 
   @Test
-  public void givenListWhenWriteToFileThenContentIsCorrect(@TempDir Path tempDir)
-      throws IOException {
+  public void givenListWhenWriteToFileThenContentIsCorrect(@TempDir Path tempDir) throws IOException {
     Path filePath = tempDir.resolve("tmp");
 
     List<String> lines = Arrays.asList("1", "2", "3");
     writeInFile(filePath.toFile(), new HashSet<>(lines));
 
-    assertAll(
-        () -> assertTrue(Files.exists(filePath), "File should exist"),
-        () -> assertLinesMatch(lines, Files.readAllLines(filePath)));
+    assertAll(() -> assertTrue(Files.exists(filePath), "File should exist"), () -> assertLinesMatch(lines, Files.readAllLines(filePath)));
     Files.createTempDirectory("tmp");
   }
 
   @Test
   void givenAlreadyWrittenToFileWhenCheckContentsThenContentIsCorrect()
-      throws InputException.NoFile, InputException.InvalidParam, InputException.NoData,
-          IOException {
+      throws InputException.NoFile, InputException.InvalidParam, InputException.NoData, IOException {
 
     InputStream ioStream = readAsIOStream("abc.txt", this.getClass());
     List<String> lines = readFromIOStream(ioStream);

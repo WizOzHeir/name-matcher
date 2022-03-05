@@ -13,13 +13,10 @@ import static com.homeproject.namematcher.util.Constants.*;
 public class Checker {
   private static final Logger LOGGER = Logger.getLogger(Checker.class.getName());
 
-  public static final Character[] INVALID_WINDOWS_SPECIFIC_CHARS = {
-    '"', '*', ':', '<', '>', '?', '\\', '|', 0x7F
-  };
+  public static final Character[] INVALID_WINDOWS_SPECIFIC_CHARS = {'"', '*', ':', '<', '>', '?', '\\', '|', 0x7F};
   public static final Character[] INVALID_UNIX_SPECIFIC_CHARS = {'\000'};
 
-  public static boolean isCorrectFileName(String fileName)
-      throws InputException.NoData, InputException.InvalidParam {
+  public static boolean isCorrectFileName(String fileName) throws InputException.NoData, InputException.InvalidParam {
     LOGGER.info(String.format("Check if %s is correct", fileName));
 
     if (fileName == null || fileName.isEmpty()) {
@@ -31,8 +28,7 @@ public class Checker {
     return Arrays.stream(getInvalidCharsByOS()).noneMatch(ch -> fileName.contains(ch.toString()));
   }
 
-  public static boolean isFileExisted(String fileName)
-      throws InputException.NoFile, InputException.InvalidParam, InputException.NoData {
+  public static boolean isFileExisted(String fileName) throws InputException.NoFile, InputException.InvalidParam, InputException.NoData {
     LOGGER.info(String.format("Check if %s exists", fileName));
 
     if (isCorrectFileName(fileName)) {
@@ -45,8 +41,7 @@ public class Checker {
     return false;
   }
 
-  public static boolean isCorrectInputName(String inputName)
-      throws InputException.NoData, InputException.InvalidParam {
+  public static boolean isCorrectInputName(String inputName) throws InputException.NoData, InputException.InvalidParam {
     LOGGER.info(String.format("Check if %s is correct", inputName));
 
     if (inputName == null || inputName.length() == 0) {
@@ -57,9 +52,7 @@ public class Checker {
     Matcher matcher = pattern.matcher(inputName);
     inputName = inputName.strip();
 
-    if (inputName.length() < MIN_INPUT_NAME_LEN
-        || inputName.length() > MAX_INPUT_NAME_LEN
-        || !matcher.matches()) {
+    if (inputName.length() < MIN_INPUT_NAME_LEN || inputName.length() > MAX_INPUT_NAME_LEN || !matcher.matches()) {
       throw new InputException.InvalidParam();
     }
     return true;

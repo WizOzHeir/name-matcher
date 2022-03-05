@@ -81,8 +81,7 @@ public class Indexer implements Closeable {
     return documents;
   }
 
-  public List<Document> searchIndex(String inField, String queryString)
-      throws IOException, ParseException {
+  public List<Document> searchIndex(String inField, String queryString) throws IOException, ParseException {
     LOGGER.info(String.format("Creating query from %s in %s field", inField, queryString));
     Query query = new QueryParser(inField, analyzer).parse(queryString);
     return searchIndex(query);

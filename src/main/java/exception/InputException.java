@@ -21,8 +21,7 @@ public class InputException {
     }
 
     public String getHelpMessage() {
-      return String.format(
-          "A valid name for input must be at least %d characters in the name", MIN_INPUT_NAME_LEN);
+      return String.format("A valid name for input must be at least %d characters in the name", MIN_INPUT_NAME_LEN);
     }
   }
 }

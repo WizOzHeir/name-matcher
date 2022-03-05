@@ -25,15 +25,13 @@ public class NameMatcher {
     setInputFiles(inputFiles);
   }
 
-  private void setInputName(String inputName)
-      throws InputException.InvalidParam, InputException.NoData {
+  private void setInputName(String inputName) throws InputException.InvalidParam, InputException.NoData {
     if (isCorrectInputName(inputName)) {
       this.inputName = inputName;
     }
   }
 
-  private void setInputFiles(String[] inputFiles)
-      throws InputException.InvalidParam, InputException.NoFile, InputException.NoData {
+  private void setInputFiles(String[] inputFiles) throws InputException.InvalidParam, InputException.NoFile, InputException.NoData {
     if (isCorrectInputFiles(inputFiles)) {
       this.inputFiles = inputFiles;
     }
@@ -50,10 +48,7 @@ public class NameMatcher {
       LOGGER.info(String.format("Work with %s file", inputFile));
       try (Indexer indexer = new Indexer(inputFile)) {
         List<Document> nameDocs = indexer.searchIndexWithFuzzyQuery(inputName);
-        List<String> names =
-            nameDocs.stream()
-                .map(nameDoc -> nameDoc.get(LUCENE_RAW_CONTENT))
-                .collect(Collectors.toList());
+        List<String> names = nameDocs.stream().map(nameDoc -> nameDoc.get(LUCENE_RAW_CONTENT)).collect(Collectors.toList());
         inputFileToNameMatches.put(inputFile, new HashSet<>(names));
       }
     }

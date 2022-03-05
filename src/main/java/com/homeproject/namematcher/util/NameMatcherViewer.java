@@ -20,16 +20,14 @@ public class NameMatcherViewer {
     this.nameMatcher = nameMatcher;
   }
 
-  public void setOutputDir(String outputDirName)
-      throws InputException.InvalidParam, IOException, InputException.NoData {
+  public void setOutputDir(String outputDirName) throws InputException.InvalidParam, IOException, InputException.NoData {
     LOGGER.info(String.format("Create output directory %s", outputDir));
     if (outputDirName != null) {
       outputDir = createDirectory(outputDirName);
     }
   }
 
-  public void getView(String outputDirName)
-      throws InputException.InvalidParam, IOException, InputException.NoData {
+  public void getView(String outputDirName) throws InputException.InvalidParam, IOException, InputException.NoData {
     LOGGER.info("Set appropriate result(s) view");
 
     if (outputDir != null) {
@@ -38,8 +36,7 @@ public class NameMatcherViewer {
           .getInputFileToNameMatches()
           .forEach(
               (inputFile, uniqueNames) -> {
-                File outputFile =
-                    new File(outputDir.getPath(), String.format("OUTPUT-%s", inputFile));
+                File outputFile = new File(outputDir.getPath(), String.format("OUTPUT-%s", inputFile));
                 try {
                   writeInFile(outputFile, uniqueNames);
                 } catch (IOException e) {

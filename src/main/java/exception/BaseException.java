@@ -22,7 +22,6 @@ public abstract class BaseException extends Exception {
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     String timeString = timeFormat.format(new Date());
     return String.format(
-        "[%s] %s in thread \"%s\" - %s",
-        timeString, BaseException.class.getName(), Thread.currentThread().getName(), getMsg());
+        "[%s] %s in thread \"%s\" - %s", timeString, BaseException.class.getName(), Thread.currentThread().getName(), getMsg());
   }
 }

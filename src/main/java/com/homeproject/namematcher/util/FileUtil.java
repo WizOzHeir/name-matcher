@@ -23,13 +23,11 @@ public class FileUtil {
     return new File(classLoader.getResource(fileName).getFile());
   }
 
-  public static File createDirectory(String dirName)
-      throws InputException.InvalidParam, InputException.NoData, IOException {
+  public static File createDirectory(String dirName) throws InputException.InvalidParam, InputException.NoData, IOException {
     LOGGER.info(String.format("Creating directory %s", dirName));
 
     if (isCorrectFileName(dirName)) {
-      String jarFilePath =
-          FileUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+      String jarFilePath = FileUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
       String targetPath = Paths.get(jarFilePath).getParent().toString();
       File targetDir = new File(targetPath, dirName);
       if (!targetDir.exists()) {
